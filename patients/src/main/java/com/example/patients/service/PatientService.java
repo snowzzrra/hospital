@@ -25,73 +25,73 @@ public class PatientService {
 	@Autowired
 	private AdressRepo AdressRepo;
 
-	public List<PatientData> converterDadosPacientes(List<Patients> lista) {
+	public List<PatientData> convertDataPatients(List<Patients> lista) {
 		if (lista.isEmpty())
 			return null;
-		return lista.stream().filter(c -> c.isApagado() == false).map(PatientData::new).collect(Collectors.toList());
+		return lista.stream().filter(c -> c.isDeleted() == false).map(PatientData::new).collect(Collectors.toList());
 	}
 
-	public List<PatientDataList> converterOrdenado(List<Patients> lista) {
+	public List<PatientDataList> convertSorted(List<Patients> lista) {
 		if (lista.isEmpty())
 			return null;
 		return lista.stream().sorted((object1, object2) -> object1.getNome().compareTo(object2.getNome()))
 				.map(PatientDataList::new).collect(Collectors.toList());
 	}
 
-	public List<PatientData> buscarTodos() {
-		return this.converterDadosPacientes(this.pacienteRepository.findAll());
+	public List<PatientData> searchAll() {
+		return this.convertDataPatients(this.pacienteRepository.findAll());
 	}
 
-	public List<PatientDataList> buscarOrdenado() {
-		return this.converterOrdenado(this.pacienteRepository.findAll());
+	public List<PatientDataList> searchSorted() {
+		return this.convertSorted(this.pacienteRepository.findAll());
 	}
 
 	@SuppressWarnings("deprecation")
-	public ConsultationData getPelaId(Long id) {
+	public ConsultationData getById(Long id) {
 		java.util.Optional<Patients> op = pacienteRepository.findById(id);
-		if (op.isPresent() && op.get().isApagado() == false) {
+		if (op.isPresent() && op.get().isDeleted() == false) {
 			return new ConsultationData(this.pacienteRepository.getById(id));
 		} else
 			return null;
 	}
 
-	public Patients cadastrar(PatientForm dados) {
-		Patients paciente = new Patients(dados);
-		Address endereco = new Address(dados.endereco());
-		endereco.setComplemento(dados.endereco().complemento());
-		endereco.setNumero(dados.endereco().numero());
-		paciente.setEndereco(endereco);
-		AdressRepo.save(endereco);
-		pacienteRepository.save(paciente);
+	public Patients post(PatientForm dados) {
+		Patients patient = new Patients(dados);
+		Address address = new Address(dados.endereco());
+		address.setComplemento(dados.endereco().complemento());
+		address.setNumero(dados.endereco().numero());
+		patient.setEndereco(address);
+		AdressRepo.save(address);
+		pacienteRepository.save(patient);
 
-		return paciente;
+		return patient;
 	}
 
-	public Patients atualizar(UpdatePatientForm dados, Long id) {
+	public Patients update(UpdatePatientForm dados, Long id) {
 		@SuppressWarnings("deprecation")
-		Patients paciente = pacienteRepository.getById(id);
-		Address endereco = new Address(dados.endereco());
+		Patients patient = pacienteRepository.getById(id);
+		Address address = new Address(dados.endereco());
 
-		paciente.setNome(dados.nome());
-		paciente.setTelefone(dados.telefone());
-		endereco.setComplemento(dados.endereco().complemento());
-		endereco.setNumero(dados.endereco().numero());
-		paciente.setEndereco(endereco);
-		AdressRepo.save(endereco);
-		pacienteRepository.save(paciente);
-		return paciente;
+		patient.setNome(dados.nome());
+		patient.setTelefone(dados.telefone());
+		address.setComplemento(dados.endereco().complemento());
+		address.setNumero(dados.endereco().numero());
+		patient.setEndereco(address);
+		AdressRepo.save(address);
+		pacienteRepository.save(patient);
+		return patient;
 	}
 
-	public Patients deletar(Long id) {
+	public Patients delete(Long id) {
 		@SuppressWarnings("deprecation")
-		Patients paciente = pacienteRepository.getById(id);
+		Patients patient = pacienteRepository.getById(id);
 		@SuppressWarnings("deprecation")
-		Address endereco = AdressRepo.getById(id);
-		paciente.setApagado(true);
-		endereco.setApagado(true);
-		AdressRepo.save(endereco);
-		pacienteRepository.save(paciente);
-		return paciente;
+		Address address = AdressRepo.getById(id);
+		patient.setDeleted(true);
+		address.setApagado(true);
+		AdressRepo.save(address);
+		pacienteRepository.save(patient);
+		return patient;
 	}
 
 }

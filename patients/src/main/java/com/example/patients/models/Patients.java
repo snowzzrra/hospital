@@ -37,7 +37,7 @@ public class Patients {
 		this.email=dados.email();
 		this.telefone=dados.telefone();
 		this.cpf=dados.cpf();
-		this.setApagado(false);
+		this.setDeleted(false);
 	}
 	
 	public Address getEndereco() {
@@ -78,11 +78,11 @@ public class Patients {
 		this.id = id;
 	}
 
-	public boolean isApagado() {
+	public boolean isDeleted() {
 		return apagado;
 	}
 
-	public void setApagado(boolean apagado) {
+	public void setDeleted(boolean apagado) {
 		this.apagado = apagado;
 	}
 	

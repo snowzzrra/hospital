@@ -30,44 +30,44 @@ public class ControllerDoctor {
 	private DoctorService doctorService;
 
 	@GetMapping
-	public String listarTodos() {
-		return doctorService.buscarTodos().toString();
+	public String listAll() {
+		return doctorService.searchAll().toString();
 	}
 
 	@GetMapping("consulta/{id}")
-	public ConsultData getPelaId(@PathVariable Long id) {
-		return doctorService.getPelaId(id);
+	public ConsultData getById(@PathVariable Long id) {
+		return doctorService.getById(id);
 	}
 
 	@GetMapping("consulta")
-	public List<ConsultData> getAllParaConsultas() {
-		return doctorService.buscarTodosParaConsulta();
+	public List<ConsultData> getAllConsults() {
+		return doctorService.searchAllConsult();
 	}
 
 	@GetMapping("/ordenado")
-	public List<DoctorListData> listarTodosOrdenado() {
-		return doctorService.buscarOrdenado();
+	public List<DoctorListData> listAllSorted() {
+		return doctorService.searchSorted();
 	}
 
 	@PostMapping
-	public ResponseEntity<DoctorData> cadastrar(@RequestBody DoctorForm dados) {
-		Doctor medico;
-		medico = doctorService.cadastrar(dados);
-		return new ResponseEntity<DoctorData>(new DoctorData(medico), HttpStatus.CREATED);
+	public ResponseEntity<DoctorData> post(@RequestBody DoctorForm dados) {
+		Doctor doctor;
+		doctor = doctorService.post(dados);
+		return new ResponseEntity<DoctorData>(new DoctorData(doctor), HttpStatus.CREATED);
 	}
 
 	@PutMapping("/{id}")
-	public ResponseEntity<DoctorData> atualizar(@RequestBody DoctorFormUpdate dados, @PathVariable Long id) {
-		Doctor medico;
-		medico = doctorService.atualizar(dados, id);
-		return new ResponseEntity<DoctorData>(new DoctorData(medico), HttpStatus.CREATED);
+	public ResponseEntity<DoctorData> update(@RequestBody DoctorFormUpdate dados, @PathVariable Long id) {
+		Doctor doctor;
+		doctor = doctorService.update(dados, id);
+		return new ResponseEntity<DoctorData>(new DoctorData(doctor), HttpStatus.CREATED);
 	}
 
 	@DeleteMapping("/{id}")
-	public String deletar(@PathVariable Long id) {
+	public String delete(@PathVariable Long id) {
 		@SuppressWarnings("unused")
-		Doctor medico;
-		medico = doctorService.deletar(id);
+		Doctor doctor;
+		doctor = doctorService.delete(id);
 		return "Deletado";
 	}
 }

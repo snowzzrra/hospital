@@ -13,6 +13,6 @@ import com.demo.test.datatransfer.PatientDataTransfer;
 public interface PatientFeignService {
 
 	@RequestMapping(method = RequestMethod.GET, value = "/{id}")
-	PatientDataTransfer getPaciente(@PathVariable Long id);
+	PatientDataTransfer getPatient(@PathVariable Long id);
 
 }

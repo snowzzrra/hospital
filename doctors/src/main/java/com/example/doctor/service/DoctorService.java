@@ -21,88 +21,88 @@ public class DoctorService {
 	private DoctorRepo doctorRepository;
 
 	@Autowired
-	private AddressRepo enderecoRepository;
+	private AddressRepo addressRepository;
 
-	public List<DoctorData> converterDadosMedicos(List<Doctor> lista) {
+	public List<DoctorData> doctorDataConversion(List<Doctor> lista) {
 		if (lista.isEmpty())
 			return null;
-		return lista.stream().filter(c -> c.isApagado() == false).map(DoctorData::new).collect(Collectors.toList());
+		return lista.stream().filter(c -> c.isErased() == false).map(DoctorData::new).collect(Collectors.toList());
 	}
 
-	public List<DoctorListData> converterOrdenado(List<Doctor> lista) {
+	public List<DoctorListData> convertSorted(List<Doctor> lista) {
 		if (lista.isEmpty())
 			return null;
-		return lista.stream().filter(c -> c.isApagado() == false)
-				.sorted((object1, object2) -> object1.getNome().compareTo(object2.getNome())).map(DoctorListData::new)
+		return lista.stream().filter(c -> c.isErased() == false)
+				.sorted((object1, object2) -> object1.getName().compareTo(object2.getName())).map(DoctorListData::new)
 				.collect(Collectors.toList());
 	}
 
-	public List<ConsultData> converterParaConsulta(List<Doctor> lista) {
+	public List<ConsultData> convertToConsult(List<Doctor> lista) {
 		if (lista.isEmpty())
 			return null;
-		return lista.stream().filter(c -> c.isApagado() == false)
-				.sorted((object1, object2) -> object1.getNome().compareTo(object2.getNome())).map(ConsultData::new)
+		return lista.stream().filter(c -> c.isErased() == false)
+				.sorted((object1, object2) -> object1.getName().compareTo(object2.getName())).map(ConsultData::new)
 				.collect(Collectors.toList());
 	}
 
-	public List<DoctorData> buscarTodos() {
-		return this.converterDadosMedicos(this.doctorRepository.findAll());
+	public List<DoctorData> searchAll() {
+		return this.doctorDataConversion(this.doctorRepository.findAll());
 	}
 
-	public List<DoctorListData> buscarOrdenado() {
-		return this.converterOrdenado(this.doctorRepository.findAll());
+	public List<DoctorListData> searchSorted() {
+		return this.convertSorted(this.doctorRepository.findAll());
 	}
 
-	public List<ConsultData> buscarTodosParaConsulta() {
-		return this.converterParaConsulta(this.doctorRepository.findAll());
+	public List<ConsultData> searchAllConsult() {
+		return this.convertToConsult(this.doctorRepository.findAll());
 	}
 
 	@SuppressWarnings("deprecation")
-	public ConsultData getPelaId(Long id) {
+	public ConsultData getById(Long id) {
 
 		java.util.Optional<Doctor> op = doctorRepository.findById(id);
-		if (op.isPresent() && op.get().isApagado() == false) {
+		if (op.isPresent() && op.get().isErased() == false) {
 			return new ConsultData(this.doctorRepository.getById(id));
 		} else
 			return null;
 	}
 
-	public Doctor cadastrar(DoctorForm dados) {
-		Doctor medico = new Doctor(dados);
-		Address endereco = new Address(dados.endereco());
-		endereco.setComplemento(dados.endereco().complemento());
-		endereco.setNumero(dados.endereco().numero());
-		medico.setEndereco(endereco);
-		enderecoRepository.save(endereco);
-		doctorRepository.save(medico);
-		return medico;
+	public Doctor post(DoctorForm data) {
+		Doctor doctor = new Doctor(data);
+		Address address = new Address(data.endereco());
+		address.setComplemento(data.endereco().complemento());
+		address.setNumero(data.endereco().numero());
+		doctor.setAddress(address);
+		addressRepository.save(address);
+		doctorRepository.save(doctor);
+		return doctor;
 	}
 
-	public Doctor atualizar(DoctorFormUpdate dados, Long id) {
+	public Doctor update(DoctorFormUpdate dados, Long id) {
 		@SuppressWarnings("deprecation")
-		Doctor medico = doctorRepository.getById(id);
-		Address endereco = new Address(dados.endereco());
+		Doctor doctor = doctorRepository.getById(id);
+		Address address = new Address(dados.endereco());
 
-		medico.setNome(dados.nome());
-		medico.setTelefone(dados.telefone());
-		endereco.setComplemento(dados.endereco().complemento());
-		endereco.setNumero(dados.endereco().numero());
-		medico.setEndereco(endereco);
-		enderecoRepository.save(endereco);
-		doctorRepository.save(medico);
-		return medico;
+		doctor.setName(dados.nome());
+		doctor.setPhoneNumber(dados.telefone());
+		address.setComplemento(dados.endereco().complemento());
+		address.setNumero(dados.endereco().numero());
+		doctor.setAddress(address);
+		addressRepository.save(address);
+		doctorRepository.save(doctor);
+		return doctor;
 	}
 
-	public Doctor deletar(Long id) {
+	public Doctor delete(Long id) {
 		@SuppressWarnings("deprecation")
-		Doctor medico = doctorRepository.getById(id);
+		Doctor doctor = doctorRepository.getById(id);
 		@SuppressWarnings("deprecation")
-		Address endereco = enderecoRepository.getById(id);
-		medico.setApagado(true);
-		endereco.setApagado(true);
-		enderecoRepository.save(endereco);
-		doctorRepository.save(medico);
-		return medico;
+		Address address = addressRepository.getById(id);
+		doctor.setErased(true);
+		address.setApagado(true);
+		addressRepository.save(address);
+		doctorRepository.save(doctor);
+		return doctor;
 	}
 
 }

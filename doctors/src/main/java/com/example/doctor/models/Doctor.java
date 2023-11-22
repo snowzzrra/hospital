@@ -42,22 +42,22 @@ public class Doctor {
 		this.telefone = dados.telefone();
 		this.crm = dados.crm();
 		this.especialidade = dados.especialidade();
-		this.setApagado(false);
+		this.setErased(false);
 	}
 
-	public Address getEndereco() {
+	public Address getAddress() {
 		return this.endereco;
 	}
 
-	public void setEndereco(Address endereco) {
+	public void setAddress(Address endereco) {
 		this.endereco = endereco;
 	}
 
-	public String getNome() {
+	public String getName() {
 		return nome;
 	}
 
-	public void setNome(String nome) {
+	public void setName(String nome) {
 		this.nome = nome;
 	}
 
@@ -69,11 +69,11 @@ public class Doctor {
 		this.email = email;
 	}
 
-	public String getTelefone() {
+	public String getPhoneNumber() {
 		return telefone;
 	}
 
-	public void setTelefone(String telefone) {
+	public void setPhoneNumber(String telefone) {
 		this.telefone = telefone;
 	}
 
@@ -85,11 +85,11 @@ public class Doctor {
 		this.crm = crm;
 	}
 
-	public Expertise getEspecialidade() {
+	public Expertise getExpertise() {
 		return especialidade;
 	}
 
-	public void setEspecialidade(Expertise especialidade) {
+	public void setExpertise(Expertise especialidade) {
 		this.especialidade = especialidade;
 	}
 
@@ -101,11 +101,11 @@ public class Doctor {
 		this.id = id;
 	}
 
-	public boolean isApagado() {
+	public boolean isErased() {
 		return apagado;
 	}
 
-	public void setApagado(boolean apagado) {
+	public void setErased(boolean apagado) {
 		this.apagado = apagado;
 	}
 

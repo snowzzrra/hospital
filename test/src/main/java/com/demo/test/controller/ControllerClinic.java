@@ -29,25 +29,25 @@ public class ControllerClinic {
 	private ConsultationService<?> consultaService;
 
 	@GetMapping
-	public List<DataTransferQuery> listarTodo() {
-		return consultaService.buscarTodos();
+	public List<DataTransferQuery> listAll() {
+		return consultaService.searchAll();
 
 	}
 
 	@GetMapping("/{id}")
-	public DataTransferQuery listarTodos(@PathVariable Long id) {
-		return consultaService.pegarConsultaPelaId(id);
+	public DataTransferQuery listAllById(@PathVariable Long id) {
+		return consultaService.getConsultById(id);
 
 	}
 
 	@PostMapping
-	public ResponseEntity<?> cadastrar(@RequestBody @Valid ConsultationForm dados)
+	public ResponseEntity<?> post(@RequestBody @Valid ConsultationForm data)
 			throws MethodArgumentNotValidException, HttpMessageNotReadableException {
-		Consultation consulta;
-		consulta = consultaService.cadastrar(dados);
-		DataTransferQuery coonsultaCadastrada = new DataTransferQuery(consulta,
-				consultaService.fetchMedico(consulta.getMedico()),
-				consultaService.fetchPaciente(consulta.getPaciente()));
-		return new ResponseEntity<>(coonsultaCadastrada, HttpStatus.CREATED);
+		Consultation consult;
+		consult = consultaService.post(data);
+		DataTransferQuery postedConsult = new DataTransferQuery(consult,
+				consultaService.fetchDoctor(consult.getDoctor()),
+				consultaService.fetchPatient(consult.getPatient()));
+		return new ResponseEntity<>(postedConsult, HttpStatus.CREATED);
 	}
 }

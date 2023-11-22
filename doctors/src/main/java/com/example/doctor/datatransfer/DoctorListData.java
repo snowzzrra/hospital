@@ -6,7 +6,7 @@ import com.example.doctor.models.Doctor;
 public record DoctorListData(String nome, String email, String crm, Expertise especialidade) {
 
 	public DoctorListData(Doctor medico) {
-		this(medico.getNome(), medico.getEmail(), medico.getCrm(), medico.getEspecialidade());
+		this(medico.getName(), medico.getEmail(), medico.getCrm(), medico.getExpertise());
 	}
 
 }

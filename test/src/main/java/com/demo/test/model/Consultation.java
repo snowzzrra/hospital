@@ -57,7 +57,7 @@ public class Consultation {
 		this.cancelado = cancelado;
 	}
 
-	public Long getMedico() {
+	public Long getDoctor() {
 		return medico;
 	}
 
@@ -65,7 +65,7 @@ public class Consultation {
 		this.medico = medico;
 	}
 
-	public Long getPaciente() {
+	public Long getPatient() {
 		return paciente;
 	}
 

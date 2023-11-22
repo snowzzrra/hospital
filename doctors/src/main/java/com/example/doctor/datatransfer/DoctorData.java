@@ -8,8 +8,8 @@ public record DoctorData(Long id, String nome, String email, String telefone, St
 		Expertise especialidade) {
 
 	public DoctorData(Doctor medico) {
-		this(medico.getId(), medico.getNome(), medico.getEmail(), medico.getTelefone(), medico.getCrm(),
-				medico.getEndereco(), medico.getEspecialidade());
+		this(medico.getId(), medico.getName(), medico.getEmail(), medico.getPhoneNumber(), medico.getCrm(),
+				medico.getAddress(), medico.getExpertise());
 	}
 
 }

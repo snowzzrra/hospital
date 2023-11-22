@@ -18,31 +18,31 @@ import com.demo.test.repositories.ConsultationDateRepo;
 public class ConsultationService<R> {
 
 	@Autowired
-	private ConsultationRepo consultaRepository;
+	private ConsultationRepo consultationRepository;
 
 	@Autowired
 	private ConsultationDateRepo dataRepository;
 
 	@Autowired
-	private DoctorFeignService medicoFeign;
+	private DoctorFeignService doctorFeign;
 
 	@Autowired
-	private PatientFeignService pacienteFeign;
+	private PatientFeignService patientFeign;
 
-	public List<DataTransferQuery> converterDadosConsulta(List<Consultation> lista) {
+	public List<DataTransferQuery> consultationDateConversion(List<Consultation> lista) {
 		if (lista.isEmpty())
 			return null;
-		return lista.stream().map(emp -> new DataTransferQuery(emp, this.fetchMedico(emp.getMedico()),
-				this.fetchPaciente(emp.getPaciente()))).collect(Collectors.toList());
+		return lista.stream().map(emp -> new DataTransferQuery(emp, this.fetchDoctor(emp.getDoctor()),
+				this.fetchPatient(emp.getPatient()))).collect(Collectors.toList());
 
 	}
 
-	public List<DataTransferQuery> buscarTodos() {
-		return this.converterDadosConsulta(this.consultaRepository.findAll());
+	public List<DataTransferQuery> searchAll() {
+		return this.consultationDateConversion(this.consultationRepository.findAll());
 	}
 
-	public DoctorDataTransfer fetchMedico(Long id) {
-		DoctorDataTransfer medico = medicoFeign.getMedicos(id);
+	public DoctorDataTransfer fetchDoctor(Long id) {
+		DoctorDataTransfer medico = doctorFeign.getDoctors(id);
 		if (medico == null) {
 			System.out.println("nuloooooooooooooooooooooooooooooooooooooooooooooooooooo \n \n"
 					+ "\n\n *********************************************");
@@ -52,39 +52,39 @@ public class ConsultationService<R> {
 	}
 
 	public List<DoctorDataTransfer> fetchAllMedico() {
-		List<DoctorDataTransfer> medicos = medicoFeign.getAllMedicos();
+		List<DoctorDataTransfer> medicos = doctorFeign.getAllDoctors();
 		return medicos;
 	}
 
-	public PatientDataTransfer fetchPaciente(Long id) {
-		PatientDataTransfer paciente = pacienteFeign.getPaciente(id);
+	public PatientDataTransfer fetchPatient(Long id) {
+		PatientDataTransfer paciente = patientFeign.getPatient(id);
 		return paciente;
 	}
 
-	public DataTransferQuery pegarConsultaPelaId(Long id) {
+	public DataTransferQuery getConsultById(Long id) {
 		@SuppressWarnings("deprecation")
-		Consultation consulta = consultaRepository.getById(id);
-		DataTransferQuery consultaDados = new DataTransferQuery(consulta, this.fetchMedico(consulta.getMedico()),
-				this.fetchPaciente(consulta.getPaciente()));
+		Consultation consulta = consultationRepository.getById(id);
+		DataTransferQuery consultaDados = new DataTransferQuery(consulta, this.fetchDoctor(consulta.getDoctor()),
+				this.fetchPatient(consulta.getPatient()));
 		return consultaDados;
 	}
 
-	public Consultation cadastrar(ConsultationForm dados) {
+	public Consultation post(ConsultationForm dados) {
 		Consultation consulta = new Consultation(dados);
 		ConsultationDate data = new ConsultationDate(dados.dataConsulta());
 		consulta.setData(data);
 		DoctorDataTransfer medico = null;
 		if (dados.medico() == null)
-			medico = this.pegarMedicoAleatorio(this.fetchAllMedico());
+			medico = this.pickRandomDoctor(this.fetchAllMedico());
 		else
-			medico = this.fetchMedico(consulta.getMedico());
+			medico = this.fetchDoctor(consulta.getDoctor());
 		consulta.setMedico(medico.id());
 		dataRepository.save(data);
-		consultaRepository.save(consulta);
+		consultationRepository.save(consulta);
 		return consulta;
 	}
 
-	public DoctorDataTransfer pegarMedicoAleatorio(List<DoctorDataTransfer> medicos) {
+	public DoctorDataTransfer pickRandomDoctor(List<DoctorDataTransfer> medicos) {
 		if (medicos.size() == 0)
 			return null;
 		Random rndm = new Random();

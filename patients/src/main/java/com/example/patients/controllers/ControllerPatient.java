@@ -28,39 +28,39 @@ public class ControllerPatient {
 	private PatientService pacienteService;
 
 	@GetMapping
-	public List<PatientData> listarTodos() {
-		return pacienteService.buscarTodos();
+	public List<PatientData> listAll() {
+		return pacienteService.searchAll();
 	}
 
 	@GetMapping("/{id}")
-	public ConsultationData getPelaId(@PathVariable Long id) {
-		return pacienteService.getPelaId(id);
+	public ConsultationData getById(@PathVariable Long id) {
+		return pacienteService.getById(id);
 	}
 
 	@GetMapping("/ordenado")
-	public List<PatientDataList> listarTodosOrdenado() {
-		return pacienteService.buscarOrdenado();
+	public List<PatientDataList> listAllSorted() {
+		return pacienteService.searchSorted();
 	}
 
 	@PostMapping
-	public ResponseEntity<PatientData> cadastrar(@RequestBody PatientForm dados) {
-		Patients paciente;
-		paciente = pacienteService.cadastrar(dados);
-		return new ResponseEntity<PatientData>(new PatientData(paciente), HttpStatus.CREATED);
+	public ResponseEntity<PatientData> post(@RequestBody PatientForm dados) {
+		Patients patient;
+		patient = pacienteService.post(dados);
+		return new ResponseEntity<PatientData>(new PatientData(patient), HttpStatus.CREATED);
 	}
 
 	@PutMapping("/{id}")
-	public ResponseEntity<PatientData> atualizar(@RequestBody UpdatePatientForm dados, @PathVariable Long id) {
-		Patients paciente;
-		paciente = pacienteService.atualizar(dados, id);
-		return new ResponseEntity<PatientData>(new PatientData(paciente), HttpStatus.CREATED);
+	public ResponseEntity<PatientData> update(@RequestBody UpdatePatientForm dados, @PathVariable Long id) {
+		Patients patient;
+		patient = pacienteService.update(dados, id);
+		return new ResponseEntity<PatientData>(new PatientData(patient), HttpStatus.CREATED);
 	}
 
 	@DeleteMapping("/{id}")
-	public String deletar(@PathVariable Long id) {
+	public String delete(@PathVariable Long id) {
 		@SuppressWarnings("unused")
-		Patients paciente;
-		paciente = pacienteService.deletar(id);
+		Patients patient;
+		patient = pacienteService.delete(id);
 		return "Deletado com Sucesso";
 	}
 }

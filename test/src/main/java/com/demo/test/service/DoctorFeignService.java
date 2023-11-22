@@ -14,8 +14,8 @@ import com.demo.test.datatransfer.DoctorDataTransfer;
 @Service
 public interface DoctorFeignService {
 	@RequestMapping(method = RequestMethod.GET, value = "")
-	List<DoctorDataTransfer> getAllMedicos();
+	List<DoctorDataTransfer> getAllDoctors();
 
 	@RequestMapping(method = RequestMethod.GET, value = "/{id}")
-	DoctorDataTransfer getMedicos(@PathVariable Long id);
+	DoctorDataTransfer getDoctors(@PathVariable Long id);
 }
